@@ -11,7 +11,7 @@ router.get('/posts',(req,res)=>{
     
 })
 
-router.get('/categorias',  (res,res)=>{
+router.get('/categorias',  (req,res)=>{
     res.send('pagia de categoras')
     
 })
