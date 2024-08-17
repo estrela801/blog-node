@@ -1,9 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/',()=>{
-    res.send('pagina principal')
-    
+router.get('/',(req,res)=>{
+    res.render('admin/admin')
 })
 
 router.get('/posts',(req,res)=>{
