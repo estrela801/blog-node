@@ -5,6 +5,7 @@
     const bodyParser = require('body-parser')
     const app = express()
     const admin = require('./rotas/adm')
+    const path = require('path')
     //const mongoose = require('mongoose')
 //Configurações
     // Body Parser
@@ -15,6 +16,8 @@
         app.set('view engine', 'handlebars')
     //Mongoose
         //Em breve
+    // Public
+        app.use(express.static(path.join(__dirname,'public')))
 //Rotas
     app.use('/admin', admin)
 //Outros
