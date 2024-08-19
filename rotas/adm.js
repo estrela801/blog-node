@@ -21,6 +21,20 @@ router.get('/blog',(req,res)=>{
     res.render('admin/blog')
 })
 router.post('/categorias/add/',  (req,res) => {
+    let erros = []
+    if(!req.body.nome||typeof req.body.nome == undefined|| typeof req.body.nome == null){
+        erros.push({texto: 'Nome ruim'})
+    }
+    if(!req.body.slug||typeof req.body.slug == undefined|| typeof req.body.slug == null){
+        erros.push({texto: 'slug ruim'})
+    }
+
+    if(erros.lenght > 0){
+        res.render('admin/addcategorias',{erro: erros})
+    }
+
+
+
     const novaCategoria = {
         nome: req.body.nome,
         slug: req.body.slug
