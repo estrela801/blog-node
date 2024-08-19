@@ -4,15 +4,29 @@ const path = require('path');
 const app = express();
 const admin = require('./rotas/adm');
 const mongoose = require('mongoose')
+const session = require('express-session')
+const flash = require('connect-flash')
 
 // Configurações
+app.use(session({
+    secret: 'estreladev',
+    resave: true,
+    saveUninitialized: true
+}))
+app.use(flash)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use( (req,res,next) => {
     console.log('oi eu sou um middleware');
     next()
 })
+//Midleware
+app.use( (req,res,next) => {
+    res.locals.msg_sucesso = req.flash('msg_sucesso')
+    res.locals.msg_err = req.flash('msg_erro')
 
+    next()
+})
 // HandleBars
 const handlebars = create({ 
     defaultLayout: 'main'
