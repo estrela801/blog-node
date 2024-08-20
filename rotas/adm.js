@@ -22,6 +22,7 @@ router.get('/blog',(req,res)=>{
 })
 router.post('/categorias/add/',  (req,res) => {
     let erros = []
+
     if(!req.body.nome||typeof req.body.nome == undefined|| typeof req.body.nome == null){
         erros.push({texto: 'Nome ruim'})
     }
@@ -29,22 +30,24 @@ router.post('/categorias/add/',  (req,res) => {
         erros.push({texto: 'slug ruim'})
     }
 
-    if(erros.lenght > 0){
-        res.render('admin/addcategorias',{erro: erros})
-    }
-
-
-
-    const novaCategoria = {
+    if(erros.length > 0){
+        res.render('admin/addcategoria',{erro: erros})
+    }else{
+        const novaCategoria = {
         nome: req.body.nome,
         slug: req.body.slug
+        }
+
+        new Categoria(novaCategoria).save().then( () => {
+        res.redirect("admin/categorias")
+        }).catch(err=>{
+            console.log('Erro ao registrar nova categoria ->', err);
+        })
     }
 
-    new Categoria(novaCategoria).save().then( () => {
-        console.log('Categoria registrada');
-    }).catch(err=>{
-        console.log('Erro ao registrar nova categoria ->', err);
-    })
+
+
+    
 })
 
 module.exports = router
