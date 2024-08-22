@@ -39,7 +39,7 @@ router.post('/categorias/add/',  (req,res) => {
         }
 
         new Categoria(novaCategoria).save().then( () => {
-        res.redirect("admin/categorias")
+        res.redirect("../categorias")
         }).catch(err=>{
             console.log('Erro ao registrar nova categoria ->', err);
         })
