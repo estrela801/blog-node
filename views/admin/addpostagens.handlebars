@@ -1,15 +1,15 @@
 {{#each erros}}
-    <div class="alert alert-danger">{{erro}}</div>
+    <div class="alert alert-danger">Erro: {{texto}} </div>
 {{else}}
-
+    {{!-- <div class="alert alert-success">Postagem registrada com sucesso</div> --}}
 {{/each}}
 <div class="card">
     <div class="card-body">
         <h4></h4>
-        <form action="/postagens/add" method="POST">
+        <form action="/admin/postagens/add" method="POST">
             <label for="titulo">Titulo:</label>
             <input type="text" class="form-control" name="titulo">
-            <label for="detalhes"></label>
+            <label for="detalhes">Detalhes</label>
             <input type="text" class="form-control" name="detalhes">
             <label for="conteudo">Conteudo</label>
             <textarea name="conteudo" class="form-control"></textarea>
