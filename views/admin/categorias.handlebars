@@ -1,4 +1,27 @@
 <h1>lista decategorias</h1>
+{{#if erro}}
+<div>{{erro}}</div>
+{{/if}}
 <hr>
 <a href="/admin/categorias/add"><button class="btn btn-success">Nova categoria</button></a>
 
+{{#each categorias}}
+
+<div class="card mt-4">
+    <div class="card-body ">
+        <h1>{{nome}}</h1>
+        <h3>{{slug}}</h3>
+        <a href="/admin/categorias/edit/{{_id}}"><button type="submit" class="btn btn-success mt-3">Editar</button></a>
+
+
+        <form action="/admin/categorias/delete" method="POST">
+            <input type="hidden" name="id" value="{{_id}}">
+            <button type="submit" class="btn btn-danger mt-3">Apagar/Deletar/Remover</button>
+        </form>
+        
+    </div>
+</div>
+
+{{else}}
+        <h1>Não há nenhuma categoria. Registre alguma :)</h1>
+{{/each}}
