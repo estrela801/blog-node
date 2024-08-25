@@ -9,7 +9,7 @@
 {{postagens}}
 <div class="card mt-4">
     <div class="card-body ">
-        <h5>Categoria:{{categoria.nome}}</h5>
+        <h5>Categoria:{{#if categoroia}}{{categoria.nome}}{{else}} Nenhuma Categoria {{/if}}</h5>
         <h1>{{titulo}}</h1>
         <h3>{{detalhes}}</h3>
         <p>{{conteudo}}</p>
