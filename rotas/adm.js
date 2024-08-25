@@ -191,4 +191,15 @@ router.post('/postagens/edit',(req,res)=>{
     })
 })
 
+router.post('/postagens/delete', (req,res) => {
+    Postagem.deleteOne({_id:req.body.id}).then( () => {
+        console.log('postagens deleteda')
+        res.redirect('/admin/postagens')
+        
+    }).catch( (err) => {
+        console.log('a categoria não foi deletada',err);
+        
+    })
+})
+
 module.exports = router
