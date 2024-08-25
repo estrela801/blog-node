@@ -26,11 +26,13 @@ router.get('/categorias',  (req,res)=>{
 })
 router.get('/categorias/edit/:id', (req,res) => {
     Categoria.findOne({_id: req.params.id}).lean().then( (categoria) => {
-        res.render('admin/edit',{categoria:categoria})
+        res.render('admin/editcategorias',{categoria:categoria})
     }).catch( (err) => {
         req.flash('msg_erro','categoria não encontrada ->')
     })
 })
+
+
 router.post('/categorias/edit', (req,res) => {
     Categoria.findOne({_id: req.body.id}).then( (categoria) => {
         categoria.nome = req.body.nome
@@ -52,6 +54,8 @@ router.post('/categorias/edit', (req,res) => {
         res.redirect('/admin/categorias')
     })
 })
+
+
 
 router.post('/categorias/delete', (req,res) => {
     Categoria.deleteOne({_id:req.body.id}).then( () => {
@@ -119,6 +123,16 @@ router.get('/postagens/add', (req,res) => {
 router.post('/postagens/add',(req,res)=>{
     
     const erros = []
+
+    if(!req.body.titulo||typeof req.body.titulo == undefined|| typeof req.body.titulo == null || req.body.titulo.lenght<3){
+        erros.push({texto: 'Nome ruim'})
+    }
+    if(!req.body.detalhes||typeof req.body.detalhes == undefined|| typeof req.body.detalhes == null || req.body.detalhes.lenght < 3 ){
+        erros.push({texto: 'detalhe ruim'})
+    }
+    if(!req.body.conteudo||typeof req.body.conteudo == undefined|| typeof req.body.conteudo == null || req.body.conteudo.lenght<3){
+        erros.push({texto: 'conteudo ruim'})
+    }
     if(req.body.categoria == '0'){ //verificando se a postagem está sendo registrada em alguma categoria
         erros.push({texto: 'categoria invalida'})//caso sim, adicione o texto no array
     }
@@ -147,10 +161,33 @@ router.post('/postagens/add',(req,res)=>{
 
     
 })
-
+router.get('/postagens/edit/:id',(req,res)=>{
+        Postagem.findOne({_id:req.params.id}).lean().then( (postagens) => {
+            res.render('admin/editpostagens',{postagens:postagens})
+        }).catch( (err) => {
+            console.log('Erro ao buscar Postagem ->',err);
+            
+        })
+})
 router.post('/postagens/edit',(req,res)=>{
-    Postagem.findOne(req.body.id).then( (postagem) => {
-    //iniciando rota de edição de postagem e desistindo por estar codando a 9 horas
+    
+    
+    Postagem.findOne({_id: req.body.id}).then( (postagem) => {
+        postagem.titulo = req.body.titulo
+        postagem.detalhes = req.body.detalhes
+        postagem.conteudo = req.body.conteudo
+    
+            postagem.save().then( () => {
+                console.log('Postagem editada com sucesso');
+                res.redirect('/admin/postagens')
+                
+            }).catch( (err) => {
+                console.log('Erro ao editar Postagem ->',err);
+                      
+            })
+    }).catch( (err) => {
+        console.log('erro ao buscar postagem ->', err);
+        
     })
 })
 
