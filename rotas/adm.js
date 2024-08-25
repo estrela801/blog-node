@@ -94,11 +94,19 @@ router.post('/categorias/add/',  (req,res) => {
     
 })
 
-//Rotas das postagens
-
+//Rotas das postagens -------------------------------------------------------------------------------------------
+router.get('/postagens', (req,res) => {
+    Postagem.find().sort({date:'desc'}).populate('categoria').lean().then( (postagens) => {
+        res.render('admin/postagens',{postagens:postagens})//recuoperando postagens e na view verificando se há alguma
+              
+    }).catch( (err) => {
+        console.log('erro ao renderizar as postagens',err);
+        
+    })
+})
 router.get('/postagens/add', (req,res) => {
     
-    Categoria.find().lean().then( (categorias) => {
+    Categoria.find().sort({date:'desc'}).lean().then( (categorias) => { //Trazendo dados das categorias para exibir no select
         res.render("admin/addpostagens",{categorias:categorias}) 
               
     }).catch(err=>{
@@ -106,35 +114,44 @@ router.get('/postagens/add', (req,res) => {
 })
 })
 
-router.get('/postagens', (req,res) => {
-    res.render('admin/postagens')
-})
+
 
 router.post('/postagens/add',(req,res)=>{
+    
     const erros = []
-    const valorSelect = req.body.categoria
-    if(valorSelect == '0'){
-        erros = {texto: 'categoria invalida'}
+    if(req.body.categoria == '0'){ //verificando se a postagem está sendo registrada em alguma categoria
+        erros.push({texto: 'categoria invalida'})//caso sim, adicione o texto no array
     }
     if(erros.length>0){
-        res.render('/admin/addpostagens',{erros:erros})
+        res.render('admin/addpostagens',{erros:erros})//se houver erro, renderizar para o usuario
     }else{
         
-        const novaPostagem ={
-            titulo : req.body.titulo,
+        const novaPostagem ={ //cadastrando nova postagem 
+            titulo : req.body.titulo, //recuperando dados com o body-parser
             detalhes : req.body.detalhes,
             conteudo : req.body.conteudo,
-            categoria : req.body.titulo
+            categoria : req.body.categoria //corrigindo erro 
         }
 
-        new Postagem(novaPostagem).save().then( () => {
-                  
-        }).catch( (erro) => {
-                  
-        })
+        new Postagem(novaPostagem).save()
+    .then(() => {
+        console.log('Postagem cadastrada');
+        res.redirect('../postagens');
+    })
+    .catch((err) => {
+        console.log('Erro ao cadastrar nova postagem', err);
+        res.render('admin/addpostagens', { erros: [{ texto: 'Erro ao salvar a postagem' }] });
+    });
+
     }
 
     
+})
+
+router.post('/postagens/edit',(req,res)=>{
+    Postagem.findOne(req.body.id).then( (postagem) => {
+    //iniciando rota de edição de postagem e desistindo por estar codando a 9 horas
+    })
 })
 
 module.exports = router
