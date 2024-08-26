@@ -12,14 +12,17 @@
     <div class="card-body">
         <form action="/admin/postagens/edit" method="POST">
         <input type="hidden" name="id" value="{{postagens._id}}">
-        <label for="nome">Titulo:</label>
+        <label for="titulo">Titulo:</label>
         <input type="text" name="titulo" id="nome" class="form-control" value="{{postagens.titulo}}">
 
-        <label for="slug">Detalhe:</label>
+        <label for="detalhes">Detalhe:</label>
         <input type="text" name="detalhes" id="slug" class="form-control" value="{{postagens.detalhes}}">
 
-        <label for="slug">Conteudo:</label>
+        <label for="conteudo">Conteudo:</label>
         <input type="text" name="conteudo" id="slug" class="form-control" value="{{postagens.conteudo}}">
+
+        <label for="slug">Slug:</label>
+        <input type="text" name="slug" id="slug" class="form-control" value="{{postagens.slug}}">
 
         <button type="submit" class="btn btn-success">Editar/Salvar</button>
 
