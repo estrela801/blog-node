@@ -22,20 +22,15 @@ const Postagem = new Schema({
     data:{
         type: Date,
         default: Date.now()
+    },
+    slug:{
+        type: String,
+        required:true
     }
 
 })
 
 
-
-
-// Postagem.save().then( () => {
-//     console.log('Modelo salvo');
-    
-// }).catch( (err) => {
-//     console.log('modelo não salvo',err);
-    
-// })
 
 
 module.exports = mongoose.model('postagem',Postagem)
