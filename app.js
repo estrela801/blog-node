@@ -50,6 +50,8 @@ app.use(express.static(path.join(__dirname, 'public')));
     
 })
 mongoose.Promisse = global.Promisse
+
+
 // Rotas
 app.use('/admin', admin);
 app.use('/usuarios', usuarios)
