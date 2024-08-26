@@ -2,12 +2,13 @@ const express = require('express');
 const { create } = require('express-handlebars');
 const path = require('path');
 const app = express();
-const admin = require('./rotas/adm');
+const admin = require('./router/adm');
 const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('connect-flash')
 const Postagem = require('./models/Postagem');
 const Categoria = require('./models/Categoria');
+const usuarios = require('./router/usuarios')
 
 // Configurações
 app.use(session({
@@ -51,6 +52,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 mongoose.Promisse = global.Promisse
 // Rotas
 app.use('/admin', admin);
+app.use('/usuarios', usuarios)
 app.get('/', (req, res) => { 
     Postagem.find().lean().populate('categoria').then( (postagens) => {
         res.render('index',{postagens:postagens});
