@@ -110,7 +110,7 @@ router.get('/postagens', (req,res) => {
 })
 router.get('/postagens/add', (req,res) => {
     
-    Categoria.find().sort({date:'desc'}).lean().then( (categorias) => { //Trazendo dados das categorias para exibir no select
+    Categoria.find().sort({data:'desc'}).lean().then( (categorias) => { //Trazendo dados das categorias para exibir no select
         res.render("admin/addpostagens",{categorias:categorias}) 
               
     }).catch(err=>{
@@ -133,6 +133,9 @@ router.post('/postagens/add',(req,res)=>{
     if(!req.body.conteudo||typeof req.body.conteudo == undefined|| typeof req.body.conteudo == null || req.body.conteudo.lenght<3){
         erros.push({texto: 'conteudo ruim'})
     }
+    if(!req.body.slug||typeof req.body.slug == undefined|| typeof req.body.slug == null || req.body.slug.lenght<3){
+        erros.push({texto: 'slug ruim'})
+    }
     if(req.body.categoria == '0'){ //verificando se a postagem está sendo registrada em alguma categoria
         erros.push({texto: 'categoria invalida'})//caso sim, adicione o texto no array
     }
@@ -144,7 +147,8 @@ router.post('/postagens/add',(req,res)=>{
             titulo : req.body.titulo, //recuperando dados com o body-parser
             detalhes : req.body.detalhes,
             conteudo : req.body.conteudo,
-            categoria : req.body.categoria //corrigindo erro 
+            categoria : req.body.categoria, //corrigindo erro 
+            slug : req.body.slug
         }
 
         new Postagem(novaPostagem).save()
@@ -176,6 +180,7 @@ router.post('/postagens/edit',(req,res)=>{
         postagem.titulo = req.body.titulo
         postagem.detalhes = req.body.detalhes
         postagem.conteudo = req.body.conteudo
+        postagem.slug = req.body.slug
     
             postagem.save().then( () => {
                 console.log('Postagem editada com sucesso');
