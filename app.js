@@ -9,6 +9,9 @@ const flash = require('connect-flash')
 const Postagem = require('./models/Postagem');
 const Categoria = require('./models/Categoria');
 const usuarios = require('./router/usuarios')
+const passport = require('passport')
+require('./config/auth')(passport)
+
 
 // Configurações
 app.use(session({
@@ -16,6 +19,9 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }))
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(flash())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,6 +33,7 @@ app.use( (req,res,next) => {
 app.use( (req,res,next) => {
     res.locals.msg_sucesso = req.flash('msg_sucesso')
     res.locals.msg_erro = req.flash('msg_erro')
+    res.locals.error = req.flash('error')
 
     next()
 })
