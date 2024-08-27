@@ -13,7 +13,7 @@ const usuarios = require('./router/usuarios')
 // Configurações
 app.use(session({
     secret: 'estreladev',
-    resave: true,
+    resave: false,
     saveUninitialized: true
 }))
 app.use(flash())
