@@ -26,7 +26,7 @@ app.use( (req,res,next) => {
 //Midleware
 app.use( (req,res,next) => {
     res.locals.msg_sucesso = req.flash('msg_sucesso')
-    res.locals.msg_err = req.flash('msg_erro')
+    res.locals.msg_erro = req.flash('msg_erro')
 
     next()
 })
@@ -57,11 +57,11 @@ app.use('/admin', admin);
 app.use('/usuarios', usuarios)
 app.get('/', (req, res) => { 
     Postagem.find().lean().populate('categoria').then( (postagens) => {
+        req.flash("msg_sucesso", "Voce está na página pricipal")
         res.render('index',{postagens:postagens});
         
     }).catch( (err) => {
-        res.redirect('/404')
-        
+        res.redirect('/404')    
     })
 });
 app.get('/404',(req,res)=>{
