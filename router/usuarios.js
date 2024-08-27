@@ -32,9 +32,9 @@ router.post('/cadastro', (req, res) => {
     if (erros.length > 0) {
         res.render('usuarios/cadastro', { erros: erros });
     } else {
-        Usuarios.findOne({email: req.body.email}).then( (usuario) => {
-            if(usuariosuario){
-                req.flash('erro_msg', 'Já existe um usuário com esse email em nosso sistema')
+        Usuarios.findOne({email: req.body.email}).lean().then( (usuario) => {
+            if(usuario){
+                req.flash('msg_erro', 'Já existe um usuário com esse email em nosso sistema')
                 res.redirect('/usuarios/cadastro')
             }else{
                 const novoUsuario = new Usuario({
@@ -45,6 +45,7 @@ router.post('/cadastro', (req, res) => {
 
                 bcrypt.genSalt(10,(erro,salt)=>{
                     bcrypt.hash(novoUsuario.senha, salt, (erro,hash)=>{
+
                         if(erro)req.flash('msg_erro', 'Houve um problema ao salvar o usuário')
                         
                         novoUsuario.senha = hash
