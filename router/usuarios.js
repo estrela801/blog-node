@@ -71,10 +71,11 @@ router.post('/cadastro', (req, res) => {
 router.get('/login',(req,res)=>{
     res.render('usuarios/login')
 })
+
 router.post('/login',(req,res,next)=>{
     passport.authenticate('local', {
         successRedirect:'/',
-        failureRedirect:'/usuarios/cadastro',
+        failureRedirect:'/usuarios/login',
         failureFlash:true
     })(req,res,next)
 

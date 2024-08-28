@@ -7,18 +7,18 @@ module.exports = (passport) => {
     passport.use(new localStrategy({usernameField: 'email', passwordField: 'senha'}, (email, senha, done) => {
         Usuario.findOne({email: email}).then(usuario => {
             if (!usuario) {
-                // console.log('Email não encontrado');
+                console.log('Email não encontrado');
                 
                 return done(null, false, { mensagem: 'O usuário não existe' });
             }
 
             bcrypt.compare(senha, usuario.senha, (erro, batem) => {
                 if (batem) {
-                    // console.log('Senha correta');
+                    console.log('Senha correta');
                     return done(null, usuario);
                 } else {
-                    // console.log('Senha incorreta');
-                    return done(null, false, { mensagem: 'Senha incorreta' });
+                    console.log('Senha incorreta', erro);
+                    return done(null, false, { mensagem: 'Senha incorreta'});
                 }
             });
         }).catch(err => {
