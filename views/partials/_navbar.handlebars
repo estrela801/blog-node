@@ -20,8 +20,18 @@
         </li>
         
       </ul>
-      <div class="d-flex">
+      
+      
+       <div class="d-flex">
         <ul class="navbar-nav me-auto">
+      
+      {{#if user}}
+          <li class="nav-item">
+            <a href="/usuarios/logout" class="nav-link">sair</a>
+          </li>
+
+        {{else}}
+     
           <li class="nav-item">
             <a href="/usuarios/login" class="nav-link">Login</a>
           </li>
@@ -29,6 +39,7 @@
             <a href="/usuarios/cadastro" class="nav-link">Cadastrar</a>
           </li>
         </ul>
+        {{/if}}
       </div>
     </div>
   </div>

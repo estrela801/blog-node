@@ -11,7 +11,8 @@ const Categoria = require('./models/Categoria');
 const usuarios = require('./router/usuarios')
 const passport = require('passport')
 require('./config/auth')(passport)
-
+const dotenv = require('dotenv')
+dotenv.config()
 
 // Configurações
 app.use(session({
@@ -30,13 +31,16 @@ app.use( (req,res,next) => {
     next()
 })
 //Midleware
-app.use( (req,res,next) => {
-    res.locals.msg_sucesso = req.flash('msg_sucesso')
-    res.locals.msg_erro = req.flash('msg_erro')
-    res.locals.error = req.flash('error')
+app.use(flash());
 
-    next()
-})
+app.use((req, res, next) => {
+    res.locals.msg_sucesso = req.flash('msg_sucesso');
+    res.locals.msg_erro = req.flash('msg_erro');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;
+    next();
+});
+
 // HandleBars
 const handlebars = create({ 
     defaultLayout: 'main'
@@ -45,11 +49,12 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 // app.set('views', path.join(__dirname, 'views', 'layout'));
 
+
 // Public
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Mongoose
-    mongoose.connect('mongodb://localhost/blogapp').then(()=>{
+    mongoose.connect(process.env.DB_URI).then(()=>{
         console.log('Conectado com sucesso');
     }
 ).catch(err=>{
@@ -121,7 +126,7 @@ app.get('/blog', (req, res) => {
 });
 
 // Outros
-const PORTA = 3000;
+const PORTA = process.env.PORT  || 3000;
 app.listen(PORTA, () => {
     console.log('Servidor rodando na porta ->', PORTA);
 });

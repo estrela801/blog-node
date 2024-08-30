@@ -9,7 +9,7 @@ module.exports = (passport) => {
             if (!usuario) {
                 console.log('Email não encontrado');
                 
-                return done(null, false, { mensagem: 'O usuário não existe' });
+                return done(null, false, { message: 'O usuário não existe' });
             }
 
             bcrypt.compare(senha, usuario.senha, (erro, batem) => {
@@ -18,7 +18,7 @@ module.exports = (passport) => {
                     return done(null, usuario);
                 } else {
                     console.log('Senha incorreta', erro);
-                    return done(null, false, { mensagem: 'Senha incorreta'});
+                    return done(null, false, { message: 'Senha incorreta'});
                 }
             });
         }).catch(err => {
