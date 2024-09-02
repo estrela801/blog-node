@@ -31,7 +31,6 @@ app.use( (req,res,next) => {
     next()
 })
 //Midleware
-app.use(flash());
 
 app.use((req, res, next) => {
     res.locals.msg_sucesso = req.flash('msg_sucesso');
@@ -48,7 +47,8 @@ const handlebars = create({
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 // app.set('views', path.join(__dirname, 'views', 'layout'));
-
+console.log("Caminho das views:", path.join(__dirname, 'views'));
+''
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')));

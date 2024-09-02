@@ -13,9 +13,7 @@ router.get('/posts',eAdmin,(req,res)=>{
    res.send('pagina de posts')
     
 })
-router.get('/categorias/add',eAdmin,(req,res)=>{
-    res.render('admin/addcategoria')
-})
+
 router.get('/categorias',eAdmin,  (req,res)=>{
     Categoria.find().lean().sort({date:'desc'}).then( (categorias) => {
         res.render('admin/categorias',{categorias: categorias})
@@ -24,6 +22,9 @@ router.get('/categorias',eAdmin,  (req,res)=>{
         console.log('Deu ruim pra listar',err);
               
     })
+})
+router.get('/categorias/add',(req,res)=>{
+    res.render('admin/addcategoria')
 })
 router.get('/categorias/edit/:id',eAdmin,(req,res) => {
     Categoria.findOne({_id: req.params.id}).lean().then( (categoria) => {
@@ -100,72 +101,12 @@ router.post('/categorias/add/', eAdmin, (req,res) => {
 })
 
 //Rotas das postagens -------------------------------------------------------------------------------------------
-router.get('/postagens',eAdmin, (req,res) => {
-    Postagem.find().sort({date:'desc'}).populate('categoria').lean().then( (postagens) => {
-        res.render('admin/postagens',{postagens:postagens})//recuoperando postagens e na view verificando se há alguma
-              
-    }).catch( (err) => {
-        console.log('erro ao renderizar as postagens',err);
-        
-    })
-})
-router.get('/postagens/add',eAdmin, (req,res) => {
-    
-    Categoria.find().sort({data:'desc'}).lean().then( (categorias) => { //Trazendo dados das categorias para exibir no select
-        res.render("admin/addpostagens",{categorias:categorias}) 
-              
-    }).catch(err=>{
-    console.log('erro para achar as categorias',err)
-})
-})
 
 
 
-router.post('/postagens/add',eAdmin,(req,res)=>{
-    
-    const erros = []
 
-    if(!req.body.titulo||typeof req.body.titulo == undefined|| typeof req.body.titulo == null || req.body.titulo.lenght<3){
-        erros.push({texto: 'Nome ruim'})
-    }
-    if(!req.body.detalhes||typeof req.body.detalhes == undefined|| typeof req.body.detalhes == null || req.body.detalhes.lenght < 3 ){
-        erros.push({texto: 'detalhe ruim'})
-    }
-    if(!req.body.conteudo||typeof req.body.conteudo == undefined|| typeof req.body.conteudo == null || req.body.conteudo.lenght<3){
-        erros.push({texto: 'conteudo ruim'})
-    }
-    if(!req.body.slug||typeof req.body.slug == undefined|| typeof req.body.slug == null || req.body.slug.lenght<3){
-        erros.push({texto: 'slug ruim'})
-    }
-    if(req.body.categoria == '0'){ //verificando se a postagem está sendo registrada em alguma categoria
-        erros.push({texto: 'categoria invalida'})//caso sim, adicione o texto no array
-    }
-    if(erros.length>0){
-        res.render('admin/addpostagens',{erros:erros})//se houver erro, renderizar para o usuario
-    }else{
-        
-        const novaPostagem ={ //cadastrando nova postagem 
-            titulo : req.body.titulo, //recuperando dados com o body-parser
-            detalhes : req.body.detalhes,
-            conteudo : req.body.conteudo,
-            categoria : req.body.categoria, //corrigindo erro 
-            slug : req.body.slug
-        }
 
-        new Postagem(novaPostagem).save()
-    .then(() => {
-        console.log('Postagem cadastrada');
-        res.redirect('../postagens');
-    })
-    .catch((err) => {
-        console.log('Erro ao cadastrar nova postagem', err);
-        res.render('admin/addpostagens', { erros: [{ texto: 'Erro ao salvar a postagem' }] });
-    });
 
-    }
-
-    
-})
 router.get('/postagens/edit/:id',eAdmin,(req,res)=>{
         Postagem.findOne({_id:req.params.id}).lean().then( (postagens) => {
             res.render('admin/editpostagens',{postagens:postagens})
