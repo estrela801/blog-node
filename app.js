@@ -83,7 +83,9 @@ app.get('/404',(req,res)=>{
 app.get('/postagem/:slug',(req,res)=>{
     
     Postagem.findOne({slug: req.params.slug}).lean().then( (postagens) => {
+        console.log(req.params.slug);
         console.log(postagens);
+        
         
         if(postagens){
             res.render('postagens/postagemEspecifica',{postagens:postagens})
