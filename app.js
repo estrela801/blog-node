@@ -86,7 +86,7 @@ app.get('/postagem/:slug',(req,res)=>{
         console.log(postagens);
         
         if(postagens){
-            res.render('postagens/index',{postagens:postagens})
+            res.render('postagens/postagemEspecifica',{postagens:postagens})
         }else{
             req.flash("msg_erro", "Essa postagem não existe")
         }
