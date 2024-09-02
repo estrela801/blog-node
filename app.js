@@ -68,7 +68,7 @@ mongoose.Promisse = global.Promisse
 app.use('/admin', admin);
 app.use('/usuarios', usuarios)
 app.get('/', (req, res) => { 
-    Postagem.find().lean().populate('categoria').then( (postagens) => {
+    Postagem.find().lean().sort({data:'desc'}).populate('categoria').then( (postagens) => {
         req.flash("msg_sucesso", "Voce está na página pricipal")
         res.render('index',{postagens:postagens});
         
